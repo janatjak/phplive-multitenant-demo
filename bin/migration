@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Process\Process;
+
+$workspaces = json_decode(file_get_contents(__DIR__ . '/../config/workspaces.json'), true, 512, JSON_THROW_ON_ERROR);
+
+foreach ($workspaces as $workspace) {
+    $process = new Process(['bin/console', 'd:m:m'], env: ['WORKSPACE' => $workspace]);
+    $process->mustRun();
+}
